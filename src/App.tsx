@@ -1,25 +1,26 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Navbar from './components/navbar';
+import { Outlet } from "react-router-dom";
+import { createContext, useState } from 'react';
+
+export const UserContext:any = createContext(0);
+// using userContext at app level will help to set logout and login to navbar
 
 function App() {
+  
+  const userInfo = localStorage.getItem('user') || '';
+  const [user, setUser] = useState(userInfo);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <UserContext.Provider value={{user, setUser}}>
+      <Navbar />
+      <Outlet />
+      </UserContext.Provider>
+    </>
   );
 }
 
